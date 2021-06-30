@@ -1,14 +1,25 @@
 package com.accolite.course.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import com.accolite.course.entities.CourseEntity;
 import com.accolite.course.entities.Creator;
 import com.accolite.course.entities.Skill;
@@ -19,7 +30,13 @@ import com.accolite.course.repositories.CreatorRepository;
 import com.accolite.course.repositories.SkillRepository;
 
 @Service
+@Component
 public class CourseService {
+	@Autowired
+	private JavaMailSender mailsender;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Autowired
 	private CourseRepository courseRepository;
@@ -31,7 +48,10 @@ public class CourseService {
 	private CreatorRepository creatorRepository;
 
 	public Course saveIntocourseItemTable(Course course) {
+		String body=course.getDescription();
+		Sendemail(body);
 		CourseEntity entity = courseRepository.save(mapObjectToEntity(course));
+	
 		return mapEntityToObject(entity);
 	}
 
@@ -53,7 +73,7 @@ public class CourseService {
 		return entity;
 	}
 
-	private List<Skill> addSkill(Course course) {
+	public List<Skill> addSkill(Course course) {
 		List<Skill> skillList = new ArrayList<>();
 		int n = course.getSkills().size();
 		long skillId = 0;
@@ -95,15 +115,6 @@ public class CourseService {
 
 	private List<Creator> addCreator(Course course) {
 
-		/*long creatorId = 0;
-		String name = null;
-
-		creatorId = course.getCreator().getId();
-		name = course.getCreator().getName();
-		Creator creator = new Creator(creatorId, name);
-		//creatorRepository.save(creator);
-
-		return creator;*/
 		
 		List<Creator> creatorList = new ArrayList<>();
 		int n = course.getCreator().size();
@@ -123,17 +134,8 @@ public class CourseService {
 		return creatorList;
 
 	}
-
+   
 	private List<Creator> addCreator(CourseEntity course) {
-		/*long creatorId = 0;
-		String name = null;
-
-		creatorId = course.getCreator().getId();
-		name = course.getCreator().getName();
-		Creator creator = new Creator(creatorId, name);
-		//creatorRepository.save(creator);
-
-		return creator;*/
 		
 		List<Creator> creatorList = new ArrayList<>();
 		int n = course.getCreator().size();
@@ -185,13 +187,59 @@ public class CourseService {
 
 	}
 
-	public Course fetchCoursesByLocation(String location) throws NoContentException {
+	public List<Course> fetchCoursesByLocation(String location) throws NoContentException {
+		
+		List<Course> c=new ArrayList<Course>(); 
+		List<CourseEntity> entity = courseRepository.findByLocation(location);
+		
+		entity.stream().forEach(a->{
+			c.add(mapEntityToObject(a));
+		});
+		return c;
 
-		Optional<CourseEntity> entity = courseRepository.findByLocation(location);
-		if (!entity.isPresent()) {
-			throw new NoContentException(HttpStatus.NO_CONTENT);
-		}
-		return mapEntityToObject(entity.get());
+	} 
 
+	public void Sendemail(String Body)
+    {
+		
+   	 SimpleMailMessage message = new SimpleMailMessage(); 
+        message.setFrom("menakaraman1999@gmail.com");
+        message.setTo(getParticipants1()); 
+        message.setSubject("CourseInfo"); 
+        message.setText(Body+"  have been added have a look at that");
+        mailsender.send(message);
+   }
+	
+	
+	
+	
+
+	
+	public String[]  getParticipants1()
+	{
+		String url ="http://localhost:8901/Participants/email";
+		
+		ResponseEntity<String>reponse=null;
+		reponse=restTemplate.exchange(url,HttpMethod.GET,getHeaders(),String.class);
+		
+		String t=reponse.getBody().toString();
+		 t=t.substring(1);
+	      t=t.substring(0, t.length() - 1);  
+		String[] tokens=t.split(",");
+		
+	
+		return tokens;
+		
+		
 	}
+	private HttpEntity<?> getHeaders() {
+		HttpHeaders header=new HttpHeaders();
+		header.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+		return new HttpEntity<>(header);		
+			
+	}
+
+	
+	
+
 }

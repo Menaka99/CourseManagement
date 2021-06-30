@@ -28,6 +28,7 @@ public class SwaggerConfig {
                 .build()
                 .apiInfo(metaInfo());
     }
+    
 
     private ApiInfo metaInfo() {
 

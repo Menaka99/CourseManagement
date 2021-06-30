@@ -13,7 +13,7 @@ import com.accolite.course.entities.Skill;
 @Repository
 public interface SkillRepository extends CrudRepository<Skill, Long> {
 
-	//Optional<Creator> findByLocation(String location);
+	
 
 	
 }

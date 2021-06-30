@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class CourseEntity {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -21,10 +22,24 @@ public class CourseEntity {
 	private String prerequesite;
 	private String feedback;
 	private String location;
-    private String lastupdated;
+    public CourseEntity(Long id, String description, String prerequesite, String feedback, String location,
+			String lastupdated, List<Skill> skill, List<Creator> creator) {
+		super();
+		this.id = id;
+		this.description = description;
+		this.prerequesite = prerequesite;
+		this.feedback = feedback;
+		this.location = location;
+		this.lastupdated = lastupdated;
+		this.skill = skill;
+		this.creator = creator;
+	}
+
+	private String lastupdated;
  
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Skill> skill;
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Creator> creator;
 	

@@ -8,12 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import com.accolite.course.entities.CourseEntity;
 
+import java.util.*;
+
 
 
 @Repository
 public interface CourseRepository extends CrudRepository<CourseEntity, Long> {
 
-	Optional<CourseEntity> findByLocation(String location);
+	List<CourseEntity> findByLocation(String location);
+	
 
 	
 }

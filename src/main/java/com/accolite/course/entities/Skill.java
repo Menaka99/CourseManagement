@@ -11,9 +11,6 @@ public class Skill {
 	@Id
 	private long id;
 	private String name;
-	/*@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_entity_id", nullable = false)
-    private CourseEntity courseEntity;*/
 
 	public Skill() {
 
@@ -26,16 +23,6 @@ public class Skill {
 		this.name = name;
 		
 	}
-
-
-	/*public CourseEntity getCourseEntity() {
-		return courseEntity;
-	}
-
-
-	public void setCourseEntity(CourseEntity courseEntity) {
-		this.courseEntity = courseEntity;
-	}*/
 
 
 	public long getId() {

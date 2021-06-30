@@ -13,7 +13,7 @@ import com.accolite.course.entities.Creator;
 @Repository
 public interface CreatorRepository extends CrudRepository<Creator, Long> {
 
-	//Optional<Creator> findByLocation(String location);
+	
 
 	
 }
