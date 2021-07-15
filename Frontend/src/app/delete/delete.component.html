@@ -1,0 +1,31 @@
+<style> 
+    input[type=text] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: none;
+      border-bottom: 2px solid hsl(197, 100%, 50%);
+    }
+    </style>
+   <style> 
+    input[type=submit] {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    </style>
+    <body>
+    
+    <p ><b>DROP THE COURSE ID TO BE DELETED HERE</b></p>
+    <form (ngSubmit) = "onSubmit()">
+      
+    <!---  <input type="text" id="id" [(ngModel)] = "course.id" name="id">-->
+      
+      <input type="submit" value="Submit">
+      
+    </form>

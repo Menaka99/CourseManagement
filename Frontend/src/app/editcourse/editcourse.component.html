@@ -1,0 +1,51 @@
+<style> 
+    input[type=text] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      box-sizing: border-box;
+      border: none;
+      border-bottom: 2px solid hsl(197, 100%, 50%);
+    }
+    </style>
+   <style> 
+    input[type=submit] {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 16px 32px;
+      text-decoration: none;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    </style>
+    <body>
+    
+    <p ><b>EDIT COURSE DETAILS HERE</b></p>
+    
+    <form (ngSubmit) = "onSubmit()">
+      <label for="description">ID OF THE COURSE DETAILS TO BE EDITED</label>
+      <input type="text" id="id"  [(ngModel)] = "course.id" name = "id">
+      <label for="description">DESCRIPTION</label>
+      <input type="text" id="description"  [(ngModel)] = "course.description" name = "description">
+      
+      <label for="prerequesite">PREREQUISITE</label>
+      <input type="text" id="prereq"  [(ngModel)] = "course.prerequesite" name = "prerequesite">
+      <label for="feedback">FEEDBACK</label>
+      <input type="text" id="feedback" [(ngModel)] = "course.feedback" name="feedback">
+      <label for="location">LOCATION</label>
+      <input type="text" id="location" [(ngModel)] = "course.location" name="location">
+      <label for="creator_id">CREATOR ID</label>
+      <input type="text" id="creator_id" [(ngModel)] = "course.creator[0].id" name="creator_id">
+      <label for="creator_name">CREATOR NAME</label>
+      <input type="text" id="creator_name" [(ngModel)] = "course.creator[0].name" name="lname">
+      <label for="skill_id">SKILL ID</label>
+      <input type="text" id="skill_id" [(ngModel)] = "course.skills[0].id" name="skill_id">
+      <label for="skill_name">SKILL NAME</label>
+      <input type="text" id="skill_name" [(ngModel)] = "course.skills[0].name" name="skill_name">
+      <label for="lastupdated">DATE</label>
+      <input type="date" id="skill_name" [(ngModel)] = "course.lastupdated" name="date">
+
+      <input type="submit" value="Submit">
+      
+    </form>

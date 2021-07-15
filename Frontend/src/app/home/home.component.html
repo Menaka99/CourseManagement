@@ -1,0 +1,62 @@
+
+   
+
+    <form>
+        <input type="text" name="search" class="form-control" [(ngModel)] = "description" placeholder="Search Courses..">
+      </form>
+      
+  
+    
+    
+   
+    
+    <table>
+      <thead>
+        <tr>
+          <th>SERIAL NUMBER</th>
+          <th>COURSE</th>
+          <th>PREREQUISITE</th>
+          <th>LAST UPDATED</th>
+          
+          <th>FEEDBACK</th>
+          
+          <th>LOCATION</th>
+          <th>CREATOR</th>
+          <th>SKILL</th>
+          <th>ACTION</th>
+          
+        </tr>
+      </thead>
+     
+
+      <tbody *ngFor = "let course of courses | searchfilter: description">
+       
+        <td> {{ course.id}} </td>
+        <td> {{ course.description}} </td>
+        <td> {{ course.prerequesite}} </td>
+        <td> {{ course.lastupdated}} </td>
+        <td> {{ course.feedback}} </td>
+        
+        <td> {{ course.location}} </td>
+        <td> {{ course.creator[0].name }} </td>
+        <td> {{ course.skills[0].name }} </td>
+        
+        <td>
+            &nbsp;&nbsp;
+            <!-- <a class="action-btn"  routerLink="/Edit">
+              <i class="bi bi-pencil-fill"></i>
+            </a>  -->
+            <i (click) = "updateCourse(course.id)" class = "bi bi-pencil-fill"> </i>
+            &nbsp;&nbsp;
+          
+              <i (click) = "deleteCourse(course.id)" class="bi bi-trash-fill"></i>
+            
+            
+  
+            
+      </td>
+        </tbody>
+      
+     
+    </table>
+   
