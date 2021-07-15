@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CourseController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot-course-1</a> &gt; <a href="index.source.html" class="el_package">com.accolite.course.controller</a> &gt; <span class="el_source">CourseController.java</span></div><h1>CourseController.java</h1><pre class="source lang-java linenums">package com.accolite.course.controller;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.accolite.course.entities.CourseEntity;
+import com.accolite.course.exception.NoContentException;
+import com.accolite.course.models.Course;
+import com.accolite.course.models.countModel;
+import com.accolite.course.repositories.CourseRepository;
+import com.accolite.course.service.CourseService;
+
+
+import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.RestTemplate;
+
+
+
+@RestController
+
+@RequestMapping(&quot;/course&quot;)
+<span class="fc" id="L41">public class CourseController {</span>
+
+
+
+	@Autowired
+	private CourseService courseService;
+
+	@Autowired
+	private CourseRepository courseRepository;
+	
+	@Autowired
+	   RestTemplate restTemplate;
+
+
+	@PostMapping(&quot;/save&quot;)
+	public ResponseEntity&lt;Course&gt; saveIntocourseItemTable(@RequestBody Course course) {
+		
+<span class="nc" id="L58">		return new ResponseEntity&lt;&gt;(courseService.saveIntocourseItemTable(course), HttpStatus.OK);</span>
+		
+	}
+	
+	
+	
+	  
+	@GetMapping(path = &quot;{id}&quot;)
+	public ResponseEntity&lt;Course&gt; fetchRecordFromcourseTable(@PathVariable(&quot;id&quot;) Long id) {
+		
+<span class="nc" id="L68">		Course courseData = null;</span>
+		
+		try {
+			
+<span class="nc" id="L72">			courseData = courseService.fetchRecordFromcourseTable(id);</span>
+			
+<span class="nc" id="L74">		    } catch (NoContentException e) {</span>
+		    	
+<span class="nc" id="L76">			   return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+<span class="nc" id="L77">		   }</span>
+
+<span class="nc" id="L79">		return new ResponseEntity&lt;&gt;(courseData, HttpStatus.OK);</span>
+
+	}
+	
+	
+	@GetMapping(path = &quot;/getAllCourse&quot;)
+	public List&lt;Course&gt; getAllParticipants()
+    {
+<span class="nc" id="L87">		List&lt;Course&gt; CourseData= new ArrayList&lt;&gt;();</span>
+		//try {
+<span class="nc" id="L89">			CourseData=courseService.getCourses();</span>
+		//} catch (NoContentException e) {
+		//	e.printStackTrace();
+		//}
+	      
+<span class="nc" id="L94">        return CourseData;</span>
+    }
+	
+
+	@GetMapping(path = &quot;/getCount&quot;)
+	public List&lt;Map&lt;Integer, String&gt;&gt; getAllCount()
+    {
+		//try {
+<span class="nc" id="L102">		return courseService.getCount();</span>
+		
+		//} catch (NoContentException e) {
+		//	e.printStackTrace();
+		//}
+	      
+        
+    }
+	
+	
+	
+	
+	
+	@GetMapping(path=&quot;/getbylocation/{location}&quot;)
+	
+	public List&lt;Course&gt; fetchlocation(@PathVariable(&quot;location&quot;) String location){
+		
+<span class="nc" id="L119">		List&lt;Course&gt; CourseData= new ArrayList&lt;&gt;();</span>
+		try {
+			
+<span class="nc" id="L122">			CourseData = courseService.fetchCoursesByLocation(location);</span>
+			
+<span class="nc" id="L124">		} catch (NoContentException e) {</span>
+			
+<span class="nc" id="L126">			e.printStackTrace();</span>
+<span class="nc" id="L127">		}</span>
+
+	
+<span class="nc" id="L130">			return CourseData;</span>
+
+	}
+	
+	
+	@PutMapping(&quot;/updatecourse/{id}&quot;)
+	
+	public ResponseEntity&lt;Course&gt; updatecourse(@PathVariable(&quot;id&quot;) Long id, @RequestBody Course course) {
+
+<span class="nc" id="L139">		Optional&lt;CourseEntity&gt; courseData = courseRepository.findById(id);</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		if (courseData.isPresent()) {</span>
+
+<span class="nc" id="L143">			return new ResponseEntity&lt;&gt;(courseService.updateRecordIntocourseTable(course), HttpStatus.OK);</span>
+
+		} else {
+<span class="nc" id="L146">			return new ResponseEntity&lt;&gt;(HttpStatus.NOT_FOUND);</span>
+		}
+	}
+
+	@DeleteMapping(&quot;/deletecourse/{id}&quot;)
+	
+	public ResponseEntity&lt;HttpStatus&gt; deletecourse(@PathVariable(&quot;id&quot;) Long id) {
+		
+		try {
+
+<span class="nc" id="L156">			courseRepository.deleteById(id);</span>
+			
+<span class="nc" id="L158">			return new ResponseEntity&lt;&gt;(HttpStatus.NO_CONTENT);</span>
+			
+<span class="nc" id="L160">		} catch (Exception e) {</span>
+			
+<span class="nc" id="L162">			return new ResponseEntity&lt;&gt;(HttpStatus.EXPECTATION_FAILED);</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

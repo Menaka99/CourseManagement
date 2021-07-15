@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Course.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot-course-1</a> &gt; <a href="index.source.html" class="el_package">com.accolite.course.models</a> &gt; <span class="el_source">Course.java</span></div><h1>Course.java</h1><pre class="source lang-java linenums">package com.accolite.course.models;
+
+
+import java.util.Date;
+import java.util.List;
+
+import com.accolite.course.entities.Creator;
+import com.accolite.course.entities.Skill;
+
+
+
+
+	public class Course {
+		private Long id;
+		private String description;
+		private String prerequesite;
+		private String lastupdated;
+		private String feedback;
+		private List&lt;Skill&gt; skills;
+		private List&lt;Creator&gt; creator;
+		private String location;
+		
+
+<span class="fc" id="L24">		public Course() {</span>
+<span class="fc" id="L25">		}</span>
+        
+		public Long getId() {
+<span class="fc" id="L28">			return id;</span>
+		}
+
+		public void setId(Long i) {
+<span class="fc" id="L32">			this.id = i;</span>
+<span class="fc" id="L33">		}</span>
+
+		
+
+		public String getDescription() {
+<span class="fc" id="L38">			return description;</span>
+		}
+
+		public void setDescription(String description) {
+<span class="fc" id="L42">			this.description = description;</span>
+<span class="fc" id="L43">		}</span>
+
+		public String getPrerequesite() {
+<span class="fc" id="L46">			return prerequesite;</span>
+		}
+
+		public void setPrerequesite(String prerequesite) {
+<span class="fc" id="L50">			this.prerequesite = prerequesite;</span>
+<span class="fc" id="L51">		}</span>
+
+		
+
+		
+
+		public String getLastupdated() {
+<span class="fc" id="L58">			return lastupdated;</span>
+		}
+
+		public void setLastupdated(String lastupdated) {
+<span class="fc" id="L62">			this.lastupdated = lastupdated;</span>
+<span class="fc" id="L63">		}</span>
+
+		public String getFeedback() {
+<span class="fc" id="L66">			return feedback;</span>
+		}
+
+		public void setFeedback(String feedback) {
+<span class="fc" id="L70">			this.feedback = feedback;</span>
+<span class="fc" id="L71">		}</span>
+
+		public List&lt;Skill&gt; getSkills() {
+<span class="fc" id="L74">			return skills;</span>
+		}
+
+		public void setSkills(List&lt;Skill&gt; skills) {
+<span class="fc" id="L78">			this.skills = skills;</span>
+<span class="fc" id="L79">		}</span>
+
+		
+
+		
+
+		public List&lt;Creator&gt; getCreator() {
+<span class="fc" id="L86">			return creator;</span>
+		}
+
+		public void setCreator(List&lt;Creator&gt; creator) {
+<span class="fc" id="L90">			this.creator = creator;</span>
+<span class="fc" id="L91">		}</span>
+
+		public String getLocation() {
+<span class="fc" id="L94">			return location;</span>
+		}
+
+		public void setLocation(String location) {
+<span class="fc" id="L98">			this.location = location;</span>
+<span class="fc" id="L99">		}</span>
+
+		@Override
+		public String toString() {
+<span class="nc" id="L103">			return &quot;CourseEntity [id=&quot; + id + &quot;, desc=&quot; + description + &quot;, prerequesite=&quot; + prerequesite + &quot;, lastUpdated=&quot;</span>
+					+ lastupdated + &quot;, feedback=&quot; + feedback + &quot;, skills=&quot; + skills + &quot;, creator=&quot; + creator + &quot;, location=&quot;
+					+ location + &quot;]&quot;;
+		}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

@@ -1,0 +1,13 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+springboot-course-1,com.accolite.course.exception,NoContentException,56,0,0,0,24,0,12,0,12,0
+springboot-course-1,com.accolite.course,CourseApplication,5,7,0,0,2,2,1,2,1,2
+springboot-course-1,com.accolite.course.configs,SwaggerConfig,0,37,0,0,0,9,0,3,0,3
+springboot-course-1,com.accolite.course.service,CourseService,234,287,8,8,53,67,13,13,9,9
+springboot-course-1,com.accolite.course.models,countModel,34,0,0,0,8,0,6,0,6,0
+springboot-course-1,com.accolite.course.models,Course,47,59,0,0,1,26,1,17,1,17
+springboot-course-1,com.accolite.course.models,Item,36,0,0,0,16,0,8,0,8,0
+springboot-course-1,com.accolite.course.entities,Count,34,0,0,0,8,0,6,0,6,0
+springboot-course-1,com.accolite.course.entities,Skill,25,18,0,0,5,8,3,4,3,4
+springboot-course-1,com.accolite.course.entities,CourseEntity,63,86,0,0,8,36,4,18,4,18
+springboot-course-1,com.accolite.course.entities,Creator,25,18,0,0,5,8,3,4,3,4
+springboot-course-1,com.accolite.course.controller,CourseController,95,3,2,0,25,1,8,1,7,1

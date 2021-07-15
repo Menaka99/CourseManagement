@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CourseService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">springboot-course-1</a> &gt; <a href="index.source.html" class="el_package">com.accolite.course.service</a> &gt; <span class="el_source">CourseService.java</span></div><h1>CourseService.java</h1><pre class="source lang-java linenums">package com.accolite.course.service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.accolite.course.entities.Count;
+import com.accolite.course.entities.CourseEntity;
+import com.accolite.course.entities.Creator;
+import com.accolite.course.entities.Skill;
+import com.accolite.course.exception.NoContentException;
+import com.accolite.course.models.Course;
+import com.accolite.course.models.countModel;
+import com.accolite.course.repositories.CourseRepository;
+import com.accolite.course.repositories.CreatorRepository;
+import com.accolite.course.repositories.SkillRepository;
+
+
+@Service
+@Component
+<span class="fc" id="L39">public class CourseService {</span>
+	@Autowired
+	private JavaMailSender mailsender;
+	
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Autowired
+	private CourseRepository courseRepository;
+	
+	@Autowired
+	private SkillRepository skillRepository;
+	
+	@Autowired
+	private CreatorRepository creatorRepository;
+
+	public Course saveIntocourseItemTable(Course course) {
+<span class="nc" id="L56">		String body=course.getDescription();</span>
+<span class="nc" id="L57">		Sendemail(body);</span>
+<span class="nc" id="L58">		CourseEntity entity = courseRepository.save(mapObjectToEntity(course));</span>
+	
+<span class="nc" id="L60">		return mapEntityToObject(entity);</span>
+	}
+
+	public CourseEntity mapObjectToEntity(Course course) {
+<span class="fc" id="L64">		CourseEntity entity = new CourseEntity();</span>
+		
+		
+<span class="fc" id="L67">		entity.setId(course.getId());</span>
+<span class="fc" id="L68">		entity.setDescription(course.getDescription());</span>
+<span class="fc" id="L69">		entity.setPrerequesite(course.getPrerequesite());</span>
+		
+<span class="fc" id="L71">		entity.setLastupdated(course.getLastupdated());</span>
+		
+<span class="fc" id="L73">		entity.setFeedback(course.getFeedback());</span>
+<span class="fc" id="L74">		entity.setSkill(addSkill(course));</span>
+<span class="fc" id="L75">		entity.setCreator(addCreator(course));</span>
+<span class="fc" id="L76">		entity.setLocation(course.getLocation());</span>
+		
+<span class="fc" id="L78">		return entity;</span>
+	}
+
+	public List&lt;Skill&gt; addSkill(Course course) {
+<span class="fc" id="L82">		List&lt;Skill&gt; skillList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L83">		int n = course.getSkills().size();</span>
+<span class="fc" id="L84">		long skillId = 0;</span>
+<span class="fc" id="L85">		String name = null;</span>
+
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L88">			skillId = course.getSkills().get(i).getId();</span>
+<span class="fc" id="L89">			name = course.getSkills().get(i).getName();</span>
+
+<span class="fc" id="L91">			Skill skill = new Skill(skillId, name);</span>
+			//skillRepository.save(skill);
+<span class="fc" id="L93">			skillList.add(skill);</span>
+
+		}
+
+<span class="fc" id="L97">		return skillList;</span>
+
+	}
+
+	private List&lt;Skill&gt; addSkill(CourseEntity course) {
+<span class="fc" id="L102">		List&lt;Skill&gt; skillList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L103">		int n = course.getSkill().size();</span>
+<span class="fc" id="L104">		long skillId = 0;</span>
+<span class="fc" id="L105">		String name = null;</span>
+
+<span class="fc bfc" id="L107" title="All 2 branches covered.">		for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L108">			skillId = course.getSkill().get(i).getId();</span>
+<span class="fc" id="L109">			name = course.getSkill().get(i).getName();</span>
+
+<span class="fc" id="L111">			Skill skill = new Skill(skillId, name);</span>
+			
+<span class="fc" id="L113">			skillList.add(skill);</span>
+
+		}
+
+<span class="fc" id="L117">		return skillList;</span>
+
+	}
+
+	private List&lt;Creator&gt; addCreator(Course course) {
+
+		
+<span class="fc" id="L124">		List&lt;Creator&gt; creatorList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L125">		int n = course.getCreator().size();</span>
+<span class="fc" id="L126">		long creatorId = 0;</span>
+<span class="fc" id="L127">		String name = null;</span>
+
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L130">			creatorId = course.getCreator().get(i).getId();</span>
+<span class="fc" id="L131">			name = course.getCreator().get(i).getName();</span>
+
+<span class="fc" id="L133">			Creator creator = new Creator(creatorId, name);</span>
+			
+<span class="fc" id="L135">			creatorList.add(creator);</span>
+
+		}
+
+<span class="fc" id="L139">		return creatorList;</span>
+
+	}
+   
+	private List&lt;Creator&gt; addCreator(CourseEntity course) {
+		
+<span class="fc" id="L145">		List&lt;Creator&gt; creatorList = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L146">		int n = course.getCreator().size();</span>
+<span class="fc" id="L147">		long creatorId = 0;</span>
+<span class="fc" id="L148">		String name = null;</span>
+
+<span class="fc bfc" id="L150" title="All 2 branches covered.">		for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L151">			creatorId = course.getCreator().get(i).getId();</span>
+<span class="fc" id="L152">			name = course.getCreator().get(i).getName();</span>
+
+<span class="fc" id="L154">			Creator creator = new Creator(creatorId, name);</span>
+			
+<span class="fc" id="L156">			creatorList.add(creator);</span>
+
+		}
+
+<span class="fc" id="L160">		return creatorList;</span>
+
+	}
+
+	public Course mapEntityToObject(CourseEntity entity) {
+
+<span class="fc" id="L166">		Course course = new Course();</span>
+<span class="fc" id="L167">		course.setId(entity.getId());</span>
+<span class="fc" id="L168">		course.setDescription(entity.getDescription());</span>
+<span class="fc" id="L169">		course.setPrerequesite(entity.getPrerequesite());</span>
+<span class="fc" id="L170">		course.setLastupdated(entity.getLastupdated());</span>
+<span class="fc" id="L171">		course.setFeedback(entity.getFeedback());</span>
+<span class="fc" id="L172">		course.setSkills(addSkill(entity));</span>
+<span class="fc" id="L173">		course.setCreator(addCreator(entity));</span>
+<span class="fc" id="L174">		course.setLocation(entity.getLocation());</span>
+
+<span class="fc" id="L176">		return course;</span>
+	}
+
+	public Course fetchRecordFromcourseTable(Long id) throws NoContentException {
+
+<span class="nc" id="L181">		Optional&lt;CourseEntity&gt; entity = courseRepository.findById(id);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">		if (!entity.isPresent()) {</span>
+<span class="nc" id="L183">			throw new NoContentException(HttpStatus.NO_CONTENT);</span>
+		}
+<span class="nc" id="L185">		return mapEntityToObject(entity.get());</span>
+
+	}
+
+	public Course updateRecordIntocourseTable(Course course) {
+<span class="nc" id="L190">		CourseEntity entity = courseRepository.save(mapObjectToEntity(course));</span>
+<span class="nc" id="L191">		return mapEntityToObject(entity);</span>
+
+	}
+
+	public List&lt;Course&gt; fetchCoursesByLocation(String location) throws NoContentException {
+		
+<span class="fc" id="L197">		List&lt;Course&gt; c=new ArrayList&lt;Course&gt;(); </span>
+<span class="fc" id="L198">		List&lt;CourseEntity&gt; entity = courseRepository.findByLocation(location);</span>
+		
+<span class="fc" id="L200">		entity.stream().forEach(a-&gt;{</span>
+<span class="fc" id="L201">			c.add(mapEntityToObject(a));</span>
+<span class="fc" id="L202">		});</span>
+<span class="fc" id="L203">		return c;</span>
+
+	} 
+
+	public void Sendemail(String Body)
+    {
+		
+<span class="nc" id="L210">   	 SimpleMailMessage message = new SimpleMailMessage(); </span>
+<span class="nc" id="L211">        message.setFrom(&quot;menakaraman1999@gmail.com&quot;);</span>
+<span class="nc" id="L212">        message.setTo(getParticipants1()); </span>
+<span class="nc" id="L213">        message.setSubject(&quot;CourseInfo&quot;); </span>
+<span class="nc" id="L214">        message.setText(Body+&quot;  have been added have a look at that&quot;);</span>
+<span class="nc" id="L215">        mailsender.send(message);</span>
+<span class="nc" id="L216">   }</span>
+	
+	
+	
+	
+
+	
+	public String[]  getParticipants1()
+	{
+<span class="nc" id="L225">		String url =&quot;http://localhost:8901/Participants/email&quot;;</span>
+		
+<span class="nc" id="L227">		ResponseEntity&lt;String&gt;reponse=null;</span>
+<span class="nc" id="L228">		reponse=restTemplate.exchange(url,HttpMethod.GET,getHeaders(),String.class);</span>
+		
+<span class="nc" id="L230">		String t=reponse.getBody().toString();</span>
+<span class="nc" id="L231">		 t=t.substring(1);</span>
+<span class="nc" id="L232">	      t=t.substring(0, t.length() - 1);  </span>
+<span class="nc" id="L233">		String[] tokens=t.split(&quot;,&quot;);</span>
+		
+	
+<span class="nc" id="L236">		return tokens;</span>
+		
+		
+	}
+	private HttpEntity&lt;?&gt; getHeaders() {
+<span class="nc" id="L241">		HttpHeaders header=new HttpHeaders();</span>
+<span class="nc" id="L242">		header.set(&quot;Accept&quot;, MediaType.APPLICATION_JSON_VALUE);</span>
+<span class="nc" id="L243">		return new HttpEntity&lt;&gt;(header);		</span>
+			
+	}
+
+	public List&lt;Course&gt; getCourses() {
+<span class="nc" id="L248">		getCount();</span>
+<span class="nc" id="L249">		List&lt;Course&gt; c=new ArrayList&lt;Course&gt;(); </span>
+<span class="nc" id="L250">		List&lt;CourseEntity&gt; entity =courseRepository.findAll();</span>
+		//c.addAll((Collection&lt;? extends Course&gt;) entity.get());
+		//if (!entity.isEmpty()) {
+		//	throw new NoContentException(HttpStatus.NO_CONTENT);
+		//}
+<span class="nc" id="L255">		entity.stream().forEach(a-&gt;{</span>
+<span class="nc" id="L256">			c.add(mapEntityToObject(a));</span>
+<span class="nc" id="L257">		});</span>
+<span class="nc" id="L258">		return c;</span>
+		
+	}
+	
+	
+
+public List&lt;Map&lt;Integer, String&gt;&gt; getCount() {
+	
+<span class="nc" id="L266">	List&lt;Object[]&gt;mygroupdata =courseRepository.groupbylist();</span>
+<span class="nc" id="L267">	List&lt;Map&lt;Integer,String&gt;&gt; count1 = new ArrayList&lt;Map&lt;Integer,String&gt;&gt;() ;</span>
+	
+	
+<span class="nc bnc" id="L270" title="All 2 branches missed.">	for(Object[] data:mygroupdata)</span>
+	{
+<span class="nc" id="L272">		int i=0;</span>
+<span class="nc" id="L273">		Integer key =0;</span>
+<span class="nc" id="L274">		String location = &quot;&quot;;</span>
+<span class="nc" id="L275">		Map&lt;Integer,String&gt; map1 = new TreeMap&lt;&gt;();</span>
+		
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		for(Object d:data)</span>
+		{
+			//count.add(Integer.parseInt(d.toString()));
+			
+			//location.add(d.toString());
+			
+<span class="nc bnc" id="L283" title="All 2 branches missed.">			if(i%2==0)</span>
+			{
+<span class="nc" id="L285">				System.out.println(Integer.parseInt(d.toString()));</span>
+				
+				//count.add(Integer.parseInt(d.toString()));
+<span class="nc" id="L288">				key=Integer.parseInt(d.toString());</span>
+				
+			
+			}
+			else
+			{
+			//location.add(d.toString());
+<span class="nc" id="L295">			System.out.println(&quot;HI&quot;);</span>
+<span class="nc" id="L296">			location = d.toString();</span>
+			
+			
+			
+		}
+<span class="nc" id="L301">			i++;</span>
+		}
+<span class="nc" id="L303">		map1.put(key,location);</span>
+<span class="nc" id="L304">		count1.add(map1);</span>
+		
+		/*for(String a:location)
+		{
+			
+		}*/
+		
+<span class="nc" id="L311">	}</span>
+      
+
+
+<span class="nc" id="L315">		return count1;</span>
+		
+		
+		
+		
+	}
+
+	
+	
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>
